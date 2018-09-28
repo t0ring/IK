@@ -10,12 +10,12 @@ import java.nio.charset.Charset
 
 fun main(args: Array<String>) {
 
-    val source = "/home/andy/at"
-    val target = "CoordinatorLayout"
+    val source = "j"
+    val target = ""
     val suffix = ""
 
-    //Thread { find(source, target, suffix) }.start()
-    Thread { copy("/home/andy/Projects", "/home/andy/Projects/rz.txt") }.start()
+    Thread { find(source, target, suffix) }.start()
+    //Thread { copy("/home/andy/Projects", "/home/andy/Projects/rz.txt") }.start()
 }
 
 private fun find(source: String, target: String, suffix: String) {
