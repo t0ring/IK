@@ -1,7 +1,7 @@
 package com.andy.ikt
 
 import io.reactivex.Observable
-import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.*
 
 fun main(args: Array<String>) {
     t6()
