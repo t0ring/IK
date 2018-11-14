@@ -1,9 +1,7 @@
 package com.andy.ikt
 
 import com.andy.ikt.util.IOUtil
-import okio.BufferedSink
-import okio.BufferedSource
-import okio.Okio
+import okio.*
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
@@ -15,7 +13,7 @@ fun main(args: Array<String>) {
     val suffix = ""
 
     Thread { find(source, target, suffix) }.start()
-    //Thread { copy("/home/andy/Projects", "/home/andy/Projects/rz.txt") }.start()
+    //Thread { copy("/home/andy/Projects", "rz.txt") }.start()
 }
 
 private fun find(source: String, target: String, suffix: String) {
@@ -29,7 +27,7 @@ private fun find(source: String, target: String, suffix: String) {
         if (path.endsWith(suffix)) {
             var source: BufferedSource? = null
             try {
-                source = Okio.buffer(Okio.source(file))
+                source = file.source().buffer()
                 val content = source.readString(Charset.forName("utf-8"))
                 if (content.contains(target, true)) {
                     System.out.println("cc contains in : $path")
@@ -50,7 +48,7 @@ private fun copy(source: String, target: String) {
         target.delete()
     }
     target.createNewFile()
-    val out = Okio.buffer(Okio.sink(target))
+    val out = target.sink().buffer()
     list(dir, out)
     System.out.println("cc Completed.")
 }
@@ -75,8 +73,8 @@ private fun list(dir: File, out: BufferedSink) {
 private fun write(file: File, out: BufferedSink) {
     var source: BufferedSource? = null
     try {
-        source = Okio.buffer(Okio.source(file))
-        out.writeAll(Okio.source(file))
+        source = file.source().buffer()
+        out.writeAll(source)
         out.writeString("\n\n", Charset.forName("utf-8"))
         System.out.println("cc written file: ${file.absolutePath}")
     } catch (e: IOException) {
