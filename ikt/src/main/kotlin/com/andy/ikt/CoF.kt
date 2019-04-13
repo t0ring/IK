@@ -6,7 +6,7 @@ import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
 
-fun main(args: Array<String>) {
+fun main() {
 
     val source = "j"
     val target = ""
@@ -16,21 +16,21 @@ fun main(args: Array<String>) {
     //Thread { copy("/home/andy/Projects", "rz.txt") }.start()
 }
 
-private fun find(source: String, target: String, suffix: String) {
-    val dir = File(source)
-    for (file in dir.listFiles()) {
-        val path = file.absolutePath
-        if (file.isDirectory && file.name !in arrayOf("build", ".idea", ".gradle")) {
+private fun find(dir: String, target: String, suffix: String) {
+    val filter = { file: File -> file.name !in arrayOf("build", ".gradle", ".idea", ".git", ".svn") }
+    File(dir).listFiles().filter(filter).forEach {
+        val path = it.absolutePath
+        if (it.isDirectory) {
             find(path, target, suffix)
-            continue
+            return@forEach
         }
         if (path.endsWith(suffix)) {
             var source: BufferedSource? = null
             try {
-                source = file.source().buffer()
+                source = it.source().buffer()
                 val content = source.readString(Charset.forName("utf-8"))
                 if (content.contains(target, true)) {
-                    System.out.println("cc contains in : $path")
+                    System.out.println("cc contains in: $path")
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -43,30 +43,32 @@ private fun find(source: String, target: String, suffix: String) {
 
 private fun copy(source: String, target: String) {
     val dir = File(source)
-    val target = File(target)
-    if (target.exists()) {
-        target.delete()
+    val file = File(target)
+    if (file.exists()) {
+        file.delete()
     }
-    target.createNewFile()
-    val out = target.sink().buffer()
+    file.createNewFile()
+    val out = file.sink().buffer()
     list(dir, out)
-    System.out.println("cc Completed.")
+    System.out.println("cc completed.")
 }
 
 private fun list(dir: File, out: BufferedSink) {
-    for (file in dir.listFiles()) {
-        if (file.isDirectory && file.name !in arrayOf("build", ".idea", ".gradle")) {
-            list(file, out)
-            continue
+    val filter = { file: File -> file.name !in arrayOf("build", ".gradle", ".idea", ".git", ".svn") }
+    dir.listFiles().filter(filter).forEach {
+        if (it.isDirectory) {
+            list(it, out)
+            return@forEach
         }
-        val path = file.absolutePath
+        val path = it.absolutePath
         if (!path.endsWith(".kt")
                 && !path.endsWith(".java")
                 && !path.endsWith(".gradle")
-                && !path.endsWith(".xml")) {
-            continue
+                && !path.endsWith(".xml")
+        ) {
+            return@forEach
         }
-        write(file, out)
+        write(it, out)
     }
 }
 
