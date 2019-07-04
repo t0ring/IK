@@ -8,8 +8,8 @@ import java.nio.charset.Charset
 
 fun main() {
 
-    val source = "j"
-    val target = ""
+    val source = ""
+    val target = "www"
     val suffix = ""
 
     Thread { find(source, target, suffix) }.start()
@@ -18,7 +18,7 @@ fun main() {
 
 private fun find(dir: String, target: String, suffix: String) {
     val filter = { file: File -> file.name !in arrayOf("build", ".gradle", ".idea", ".git", ".svn") }
-    File(dir).listFiles().filter(filter).forEach {
+    File(dir).listFiles()?.filter(filter)?.forEach {
         val path = it.absolutePath
         if (it.isDirectory) {
             find(path, target, suffix)
@@ -30,7 +30,7 @@ private fun find(dir: String, target: String, suffix: String) {
                 source = it.source().buffer()
                 val content = source.readString(Charset.forName("utf-8"))
                 if (content.contains(target, true)) {
-                    System.out.println("cc contains in: $path")
+                    println("cc contains in: $path")
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -50,12 +50,12 @@ private fun copy(source: String, target: String) {
     file.createNewFile()
     val out = file.sink().buffer()
     list(dir, out)
-    System.out.println("cc completed.")
+    println("cc completed.")
 }
 
 private fun list(dir: File, out: BufferedSink) {
     val filter = { file: File -> file.name !in arrayOf("build", ".gradle", ".idea", ".git", ".svn") }
-    dir.listFiles().filter(filter).forEach {
+    dir.listFiles()?.filter(filter)?.forEach {
         if (it.isDirectory) {
             list(it, out)
             return@forEach
@@ -78,7 +78,7 @@ private fun write(file: File, out: BufferedSink) {
         source = file.source().buffer()
         out.writeAll(source)
         out.writeString("\n\n", Charset.forName("utf-8"))
-        System.out.println("cc written file: ${file.absolutePath}")
+        println("cc written file: ${file.absolutePath}")
     } catch (e: IOException) {
         e.printStackTrace()
     } finally {
