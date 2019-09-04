@@ -1,13 +1,11 @@
 package com.andy.ikt
 
-import com.andy.ikt.util.IOUtil
 import okio.*
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
 
 fun main() {
-
     val source = ""
     val target = "www"
     val suffix = ""
@@ -35,7 +33,7 @@ private fun find(dir: String, target: String, suffix: String) {
             } catch (e: IOException) {
                 e.printStackTrace()
             } finally {
-                IOUtil.closeQuietly(source)
+                source?.close()
             }
         }
     }
@@ -82,6 +80,6 @@ private fun write(file: File, out: BufferedSink) {
     } catch (e: IOException) {
         e.printStackTrace()
     } finally {
-        IOUtil.closeQuietly(source)
+        source?.close()
     }
 }

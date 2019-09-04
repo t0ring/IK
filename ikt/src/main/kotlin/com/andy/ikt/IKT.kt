@@ -69,19 +69,19 @@ fun main(args: Array<String>) {
     }
 
     val f1 = { x: Int -> x + 2 }.fmap { x: Int -> x + 3 }
-    System.out.println(f1)
+    println(f1)
 
     val f2 = Maybe.Just { x: Int -> x + 3 } `(*)` Maybe.Just(2)
-    System.out.println(f2)
+    println(f2)
 
     val f3 = listOf<(Int) -> Int>({ it * 2 }, { it + 3 }) `(*)` listOf(1, 2, 3)
-    System.out.println(f3)
+    println(f3)
 
     val f4 = { y: Int -> { x: Int -> x + y } } `($)` Maybe.Just(5)
-    System.out.println(f4)
+    println(f4)
 
     val f5 = Maybe.Just { x: Int -> x + 5 } `(*)` Maybe.Just(3)
-    System.out.println(f5)
+    println(f5)
 
     val f6 = { y: Int -> { x: Int -> x + y } } `($)` Maybe.Just(5) `(*)` Maybe.Just(3)
 
