@@ -30,7 +30,7 @@ private fun find(dir: String, target: String, suffix: String) {
                 if (content.contains(target, true)) {
                     println("cc contains in: $path")
                 }
-            } catch (e: IOException) {
+            } catch (e: Throwable) {
                 e.printStackTrace()
             } finally {
                 source?.close()
