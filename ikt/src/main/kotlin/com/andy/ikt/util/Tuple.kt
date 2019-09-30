@@ -1,4 +1,3 @@
 package com.andy.ikt.util
 
-class Tuple {
-}
+data class Tuple<T, U>(val _1: T, val _2: U)
