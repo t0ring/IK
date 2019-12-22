@@ -9,9 +9,9 @@ private val CHARSET_UTF8 = Charset.forName("utf-8")
 private val CHARSET_GBK = Charset.forName("GBK")
 
 fun main() {
-    val dir = "E:\\Ads\\asr_arch"
-    val target = ".CardView"
-    val suffix = "xml"
+    val dir = ""
+    val target = ""
+    val suffix = ""
 
     Thread { find(dir, target, suffix) }.start()
     //Thread { copy("dir", "rz.txt") }.start()
