@@ -5,13 +5,16 @@ import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
 
-fun main() {
-    val source = ""
-    val target = "www"
-    val suffix = ""
+private val CHARSET_UTF8 = Charset.forName("utf-8")
+private val CHARSET_GBK = Charset.forName("GBK")
 
-    Thread { find(source, target, suffix) }.start()
-    //Thread { copy("/home/andy/Projects", "rz.txt") }.start()
+fun main() {
+    val dir = "E:\\Ads\\asr_arch"
+    val target = ".CardView"
+    val suffix = "xml"
+
+    Thread { find(dir, target, suffix) }.start()
+    //Thread { copy("dir", "rz.txt") }.start()
 }
 
 private fun find(dir: String, target: String, suffix: String) {
@@ -26,7 +29,7 @@ private fun find(dir: String, target: String, suffix: String) {
             var source: BufferedSource? = null
             try {
                 source = it.source().buffer()
-                val content = source.readString(Charset.forName("utf-8"))
+                val content = source.readString(CHARSET_GBK)
                 if (content.contains(target, true)) {
                     println("cc contains in: $path")
                 }
